@@ -16,19 +16,20 @@ Python 2 doesn't support type annotations. Thus writing Python 2 / Python 3 agno
 
 But now when documentation is generated with `sphinx <http://www.sphinx-doc.org/en/master/>`__, the documentation doesn't include type annotations:
 
-.. include:: imgs/without-annotations.png
+.. image:: https://github.com/patrick-kidger/py2annotate/blob/master/imgs/without-annotations.png
+
 
 *Example from the* |signatory|_ *project.*
 
 .. _signatory: https://github.com/patrick-kidger/signatory
-.. |signatory| replace:: *signatory*
+.. |signatory| replace:: *Signatory*
 
 The Solution
 ============
 
 This extension remedies things so that the Sphinx documentation now looks like:
 
-.. include:: imgs/with-annotations.png
+.. image:: https://github.com/patrick-kidger/py2annotate/blob/master/imgs/with-annotations.png
 
 .. role:: python(code)
     :language: python
@@ -38,6 +39,7 @@ This extension remedies things so that the Sphinx documentation now looks like:
 Installation
 ============
 Via pip:
+
 .. code-block:: bash
 
     pip install py2annotate
@@ -46,7 +48,7 @@ It's also just a single file, so copy-paste the code if you want.
 
 Usage
 =====
-Just add 'py2annotate' to the list of extensions in `conf.py`:
+Just add py2annotate to the list of extensions in `conf.py`:
 
 .. code-block:: python
 
