@@ -67,7 +67,16 @@ class DocumenterAnnotator(autodoc.Documenter):
 
         # import the corresponding object from the py2annotate file and copy its annotations
         with autodoc.mock(self.env.config.autodoc_mock_imports):
-            obj = importlib.import_module(module.__name__ + '_py2annotate')
+            try:
+                obj = importlib.import_module(module.__name__ + '_py2annotate')
+            except SyntaxError as e:
+                if sys.version_info < (3, 6):
+                    version = '.'.join(map(str, sys.version_info))
+                    raise RuntimeError('Failed to import py2annotate file. You are using Python version {version}, '
+                                       'which is earlier than the required version 3.6. Update your Python!'
+                                       .format(version=version)) from e
+                else:
+                    raise
         for o in self.object.__qualname__.split('.'):
             obj = getattr(obj, o)
         self.object.__annotations__ = obj.__annotations__
