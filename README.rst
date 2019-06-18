@@ -16,7 +16,8 @@ Python 2 doesn't support type annotations. Thus writing Python 2 / Python 3 agno
 
 But now when documentation is generated with `sphinx <http://www.sphinx-doc.org/en/master/>`__, the documentation doesn't include type annotations:
 
-.. image:: https://github.com/patrick-kidger/py2annotate/blob/master/imgs/without-annotations.png
+.. image:: https://raw.githubusercontent.com/patrick-kidger/py2annotate/master/imgs/without-annotations.png
+    :align: center
 
 
 *Example from the* |signatory|_ *project.*
@@ -29,7 +30,8 @@ The Solution
 
 This extension remedies things so that the Sphinx documentation now looks like:
 
-.. image:: https://github.com/patrick-kidger/py2annotate/blob/master/imgs/with-annotations.png
+.. image:: https://raw.githubusercontent.com/patrick-kidger/py2annotate/master/imgs/with-annotations.png
+    :align: center
 
 .. role:: python(code)
     :language: python
