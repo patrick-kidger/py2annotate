@@ -57,11 +57,11 @@ Just add py2annotate to the list of extensions in `conf.py`:
     extensions = ['sphinx.ext.autodoc', 'py2annotate']
     ...
 
-(It shouldn't actually matter whether it comes before or after `autodoc`.)
+(It shouldn't matter whether it comes before or after `autodoc`.)
 
 Note that Sphinx itself must be run using Python 3, not Python 2. This is because `py2annotate` uses the Python 3 style
 type annotations internally in order to determine the correct annotations.
 
 Known Issues
 ============
-None so far! File a report if you run into anything.
+None so far! File a report if you run into anything. `mypy <https://mypy.readthedocs.io/en/latest/index.html>`__ and `stubgen <https://mypy.readthedocs.io/en/latest/stubgen.html>`__ are used internally though, so your code's formatting must be in a manner that they understand.
