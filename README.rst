@@ -48,6 +48,8 @@ Via pip:
 
 It's also just a single file, so copy-paste the code if you want.
 
+Requires Python 3.6+.
+
 Usage
 =====
 Just add py2annotate to the list of extensions in :code:`conf.py`:
@@ -61,8 +63,8 @@ Just add py2annotate to the list of extensions in :code:`conf.py`:
 
 (It shouldn't matter whether it comes before or after :code:`autodoc`.)
 
-Note that Sphinx itself must be run using Python 3, not Python 2. This is because py2annotate uses the Python 3 style
-type annotations internally in order to determine the correct annotations.
+Note that Sphinx itself must be run using Python 3.6+. This is because py2annotate uses the Python 3 style type
+annotations internally in order to determine the correct annotations.
 
 Known Issues
 ============

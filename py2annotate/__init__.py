@@ -1,9 +1,25 @@
 import importlib
 import inspect
+import mypy.stubgen as stubgen
+import mypy.util as mypy_util
 import os
 import shutil
 import sphinx.ext.autodoc as autodoc
-import subprocess
+import sys
+
+
+__version__ = "1.1.0"
+
+
+# Adapated from https://github.com/python/mypy/blob/master/mypy/stubgen.py to run not from command line
+def stubgen_main(opts):
+    mypy_util.check_python_version('stubgen')
+    # Make sure that the current directory is in sys.path so that
+    # stubgen can be run on packages in the current directory.
+    if not ('' in sys.path or '.' in sys.path):
+        sys.path.insert(0, '')
+    options = stubgen.parse_options(opts)
+    stubgen.generate_stubs(options)
 
 
 class DocumenterAnnotator(autodoc.Documenter):
@@ -30,24 +46,22 @@ class DocumenterAnnotator(autodoc.Documenter):
                 shutil.copy(filepath_pyi, filepath_py2annotate_py)
             # ...or by creating it from stubgen if it doesn't.
             else:
-                flags = ''
+                opts = []
                 if self.env.config.py2annotate_no_import:
-                    flags += '--no-import '
+                    opts.append('--no-import')
                 if self.env.config.py2annotate_parse_only:
-                    flags += '--parse-only '
+                    opts.append('--parse-only')
                 if self.env.config.py2annotate_ignore_errors:
-                    flags += '--ignore-errors '
+                    opts.append('--ignore-errors')
                 if self.env.config.py2annotate_include_private:
-                    flags += '--include-private '
+                    opts.append('--include-private')
                 outdir = os.path.dirname(filepath_py)
                 while os.path.isfile(os.path.join(outdir, '__init__.py')):
                     outdir, _ = os.path.split(outdir)
-                try:
-                    subprocess.call('stubgen {flags} --output {outdir} {filepath}'
-                                    .format(flags=flags, outdir=outdir, filepath=filepath_py))
-                except FileNotFoundError:
-                    raise RuntimeError('Failed to generate stubs. Have you installed stubgen? It comes with mypy:\n'
-                                       'pip install mypy')
+                opts.append('--output')
+                opts.append(outdir)
+                opts.append(filepath_py)
+                stubgen_main(opts)
                 os.rename(filepath_pyi, filepath_py2annotate_py)
             self.env.app.py2annotate_files.add(filepath_py2annotate_py)
 
