@@ -3,7 +3,7 @@ import os
 import setuptools
 
 project = 'py2annotate'
-version = "1.0.0"
+version = "1.0.2"
 author = "Patrick Kidger"
 copyright = "2019, {}".format(author)
 author_email = "contact@kidger.site"
