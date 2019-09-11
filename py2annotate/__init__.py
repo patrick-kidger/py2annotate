@@ -86,7 +86,7 @@ class DocumenterAnnotator(autodoc.Documenter):
                 for method in ('__init__', '__call__'):
                     if hasattr(self.object, method) and hasattr(obj, method):
                         object_meth = getattr(self.object, method)
-                        obj_meth = getattr(obj, method):
+                        obj_meth = getattr(obj, method)
                         if hasattr(obj_meth, '__annotations__'):
                             object_meth.__annotations__ = obj_meth.__annotations__
         except Exception as e:
