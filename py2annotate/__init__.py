@@ -8,7 +8,7 @@ import sphinx.ext.autodoc as autodoc
 import sys
 
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 
 # Adapated from https://github.com/python/mypy/blob/master/mypy/stubgen.py to run not from command line
@@ -66,22 +66,31 @@ class DocumenterAnnotator(autodoc.Documenter):
             self.env.app.py2annotate_files.add(filepath_py2annotate_py)
 
         # import the corresponding object from the py2annotate file and copy its annotations
-        with autodoc.mock(self.env.config.autodoc_mock_imports):
-            try:
-                obj = importlib.import_module(module.__name__ + '_py2annotate')
-            except SyntaxError as e:
-                if sys.version_info < (3, 6):
-                    version = '.'.join(map(str, sys.version_info))
-                    raise RuntimeError('Failed to import py2annotate file. You are using Python version {version}, '
-                                       'which is earlier than the required version 3.6. Update your Python!'
-                                       .format(version=version)) from e
-                else:
-                    raise
-        for o in self.object.__qualname__.split('.'):
-            obj = getattr(obj, o)
-        self.object.__annotations__ = obj.__annotations__
-        if self.objtype == 'class':
-            self.object.__init__.__annotations__ = obj.__init__.__annotations__
+        try:
+            with autodoc.mock(self.env.config.autodoc_mock_imports):
+                try:
+                    obj = importlib.import_module(module.__name__ + '_py2annotate')
+                except SyntaxError as e:
+                    if sys.version_info < (3, 6):
+                        version = '.'.join(map(str, sys.version_info))
+                        raise RuntimeError('Failed to import py2annotate file. You are using Python version {version}, '
+                                           'which is earlier than the required version 3.6. Update your Python!'
+                                           .format(version=version)) from e
+                    else:
+                        raise
+            for o in self.object.__qualname__.split('.'):
+                obj = getattr(obj, o)
+            if hasattr(obj, '__annotations__'):
+                self.object.__annotations__ = obj.__annotations__
+            if self.objtype == 'class':
+                for method in ('__init__', '__call__'):
+                    if hasattr(self.object, method) and hasattr(obj, method):
+                        object_meth = getattr(self.object, method)
+                        obj_meth = getattr(obj, method):
+                        if hasattr(obj_meth, '__annotations__'):
+                            object_meth.__annotations__ = obj_meth.__annotations__
+        except Exception as e:
+            print(e)
 
         return ret
 
